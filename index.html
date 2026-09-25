@@ -3086,14 +3086,13 @@ function App({ usuarioAuth, aoAbrirLogin }) {
                       <td className="td-compact">
                         {(isAdm || podeAlterarQuandoAte) ? (
                           <input className="inline-edit" type="date" value={a.quandoAte || ""}
-                            onPointerDown={(e) => {
+                            onClick={(e) => {
                               e.stopPropagation();
-                              if (e.currentTarget.showPicker) { try { e.currentTarget.showPicker(); } catch (_) {} }
+                              try { e.currentTarget.showPicker?.(); } catch (_) {}
                             }}
-                            onClick={(e) => e.stopPropagation()}
-                            onKeyDown={(e) => e.preventDefault()}
-                            onPaste={(e) => e.preventDefault()}
-                            onDrop={(e) => e.preventDefault()}
+                            onFocus={(e) => {
+                              try { e.currentTarget.showPicker?.(); } catch (_) {}
+                            }}
                             onChange={(e) => atualizarCampoInline(a.id, "quandoAte", e.target.value)}
                             title="Clique para abrir o calendário e alterar Quando? (Até)"
                             style={{ cursor: "pointer", minWidth: 132 }} />
@@ -3291,7 +3290,7 @@ function App({ usuarioAuth, aoAbrirLogin }) {
                     <input type="date" value={form.dataStart} disabled={campoBloqueadoParaUser("dataStart")} onChange={(e) => setForm({ ...form, dataStart: e.target.value })} />
                   </div>
                   <div className="field campo-bloqueado"><label>Quando? (Até)</label>
-                    <input type="date" value={form.quandoAte} disabled={campoBloqueadoParaUser("quandoAte")} onPointerDown={(e) => { if (!e.currentTarget.disabled && e.currentTarget.showPicker) { try { e.currentTarget.showPicker(); } catch (_) {} } }} onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.preventDefault()} onPaste={(e) => e.preventDefault()} onDrop={(e) => e.preventDefault()} onChange={(e) => setForm({ ...form, quandoAte: e.target.value })} title={campoBloqueadoParaUser("quandoAte") ? "Campo bloqueado para este usuário" : "Clique para abrir o calendário"} />
+                    <input type="date" value={form.quandoAte} disabled={campoBloqueadoParaUser("quandoAte")} onClick={(e) => { e.stopPropagation(); if (!e.currentTarget.disabled) { try { e.currentTarget.showPicker?.(); } catch (_) {} } }} onFocus={(e) => { if (!e.currentTarget.disabled) { try { e.currentTarget.showPicker?.(); } catch (_) {} } }} onChange={(e) => setForm({ ...form, quandoAte: e.target.value })} title={campoBloqueadoParaUser("quandoAte") ? "Campo bloqueado para este usuário" : "Clique para abrir o calendário"} />
                   </div>
                   <div className="field campo-bloqueado"><label>Data de Conclusão</label>
                     <input type="date" value={form.dataConclusao} onKeyDown={(e) => e.preventDefault()} onPaste={(e) => e.preventDefault()} onDrop={(e) => e.preventDefault()} onClick={(e) => { if (!e.currentTarget.disabled && e.currentTarget.showPicker) e.currentTarget.showPicker(); }} onChange={(e) => setForm({ ...form, dataConclusao: e.target.value })} />
